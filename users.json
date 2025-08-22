@@ -7,7 +7,7 @@
       "trial_started": "2025-08-22T18:39:06Z",
       "subscription_until": null,
       "usage_count": 0,
-      "last_login": "2025-08-22T20:05:08Z"
+      "last_login": "2025-08-22T20:10:49Z"
     },
     "test": {
       "password_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
@@ -23,7 +23,7 @@
       "role": "admin",
       "created_at": "2025-08-22T20:07:03Z",
       "trial_started": "2025-08-22T20:07:03Z",
-      "subscription_until": null,
+      "subscription_until": "2025-11-10T20:11:43Z",
       "usage_count": 0,
       "last_login": "2025-08-22T20:07:07Z"
     }
