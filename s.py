@@ -3,9 +3,7 @@ import wikipedia as wk
 import webbrowser
 from langdetect import detect
 
-
 t = str(pu.prompt("search:"))
-
 
 try:
     language = detect(t)
@@ -24,11 +22,9 @@ except:
 
 search_results = wk.search(t)
 
-
 if search_results:
 
     webbrowser.open(wk.page(search_results[0]).url)
-
 
 else:
 
