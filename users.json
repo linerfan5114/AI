@@ -20,7 +20,7 @@
     },
     "admin1": {
       "password_hash": "0d4cf2c274c64064697ff6810285cb04faa7330f1b01d39b0afadbc0c5789000",
-      "role": "user",
+      "role": "admin",
       "created_at": "2025-08-22T20:07:03Z",
       "trial_started": "2025-08-22T20:07:03Z",
       "subscription_until": null,
