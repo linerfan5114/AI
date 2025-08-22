@@ -10,11 +10,6 @@ from tkinter import ttk, messagebox, simpledialog
 
 pu.alert("""Made by dark-plus group
 Programmers: Erfan Mohammadi and Ali Ahmadabadi""")
-pu.alert("""Сделано группой dark-plus
-Программисты: Эрфан Мохаммади и Али Ахмадaбади.""")
-pu.alert("""Réalisé par le groupe dark-plus
-Programmeurs : Erfan Mohammadi et Ali Ahmadabadi""")
-
 USERS_FILE = "users.json"
 CSV_PATH = "computer_specs_very_large.csv"
 
