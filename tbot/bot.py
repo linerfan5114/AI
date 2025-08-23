@@ -9,7 +9,7 @@ from telegram import Update
 CSV_PATH = "computer_specs_very_large.csv"
 MODEL_PATH = "model.pkl"
 COLS_PATH = "x_train_cols.pkl"
-BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
+BOT_TOKEN = "8196612202:AAGpFRPryPtXA5bEpJxSrb0Db1cU2uYWOFg"
 
 def train_and_save():
     df = pd.read_csv(CSV_PATH)
