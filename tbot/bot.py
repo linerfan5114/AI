@@ -66,7 +66,20 @@ def predict_price(cpu, gpu, brand, ram, ssd, model, X_train_cols, currency):
     return f"{converted:.2f} {symbol}"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("سلام! مشخصات لپ‌تاپ رو اینطوری بفرست:\nCPU,GPU,Brand,RAM,SSD\n\nبرای انتخاب واحد پول: /currency usd یا eur یا irr\nبرای راهنما: /help")
+    await update.message.reply_text("""📌 راهنمای ربات:
+- مشخصات لپ‌تاپ رو اینطوری بفرست:
+CPU,GPU,Brand,RAM,SSD
+مثال:
+intel i7,nvidia rtx 3060,asus,16,512
+
+💱 تغییر واحد پول:
+ /currency usd → دلار
+ /currency eur → یورو
+ /currency irr → تومان
+
+⚙️ دستورات ویژه:
+ /train → آموزش دوباره مدل (فقط برای ادمین‌ها)
+ /help → همین منو""")
 
 async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     txt = """📌 راهنمای ربات:
