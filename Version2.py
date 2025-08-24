@@ -461,7 +461,7 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Dark-Plus | Price Predictor")
-        self.geometry("720x720")
+        self.geometry("770x770")
         self.configure(bg="#a0a0a0")
         self.db = UsersDB(USERS_FILE)
         self.current_user = None
