@@ -7,16 +7,7 @@
       "trial_started": "2025-08-22T18:39:06Z",
       "subscription_until": "2027-03-25T20:11:43Z",
       "usage_count": 2,
-      "last_login": "2025-08-23T22:09:20Z"
-    },
-    "dev": {
-      "password_hash": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
-      "role": "admin",
-      "created_at": "2025-08-22T19:50:01Z",
-      "trial_started": "2025-08-22T19:50:01Z",
-      "subscription_until": "2027-03-25T23:45:52Z",
-      "usage_count": 0,
-      "last_login": "2025-08-22T23:45:41Z"
+      "last_login": "2025-08-24T05:20:24Z"
     },
     "admin1": {
       "password_hash": "0d4cf2c274c64064697ff6810285cb04faa7330f1b01d39b0afadbc0c5789000",
@@ -26,15 +17,6 @@
       "subscription_until": "2027-03-25T20:11:43Z",
       "usage_count": 0,
       "last_login": "2025-08-22T20:07:07Z"
-    },
-    "mohammadi": {
-      "password_hash": "b6782e9d150d7f20cc9157a233c350135383e76ad0f9ce1bb20f3bf43cfaccc7",
-      "role": "user",
-      "created_at": "2025-08-23T14:05:08Z",
-      "trial_started": "2025-08-23T14:05:08Z",
-      "subscription_until": "2025-09-12T14:07:53Z",
-      "usage_count": 1,
-      "last_login": "2025-08-23T14:05:13Z"
     }
   }
 }
