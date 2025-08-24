@@ -149,7 +149,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """راهنمای استفاده از ربات را نمایش می‌دهد."""
     await update.message.reply_text(
         "این ربات توسط گروه dark plus ساخته شده است و قیمت کامپیوتر را با ماشین پیشبینی می‌کند.\n"
-        "سازندگان: عرفان محمدی\n\n"
+        "سازندگان: ------\n\n"
         "فرمت ورودی:\nCPU,GPU,Brand,RAM,SSD\n\n"
         "دستورات:\n"
         "/start → شروع ربات و انتخاب واحد پول\n"
