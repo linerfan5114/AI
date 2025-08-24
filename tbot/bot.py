@@ -3,18 +3,17 @@ import joblib
 from sklearn.model_selection import train_test_split, GridSearchCV
 from xgboost import XGBRegressor
 from sklearn.metrics import mean_absolute_error, r2_score
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
-from telegram import Update
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes, CallbackQueryHandler
 import os
 
 CSV_PATH = "computer_specs_very_large.csv"
 MODEL_PATH = "model.pkl"
 COLS_PATH = "x_train_cols.pkl"
-BOT_TOKEN = ".."
-ADMINS = [1, 2] 
-
-
+BOT_TOKEN = "8196612202:AAGpFRPryPtXA5bEpJxSrb0Db1cU2uYWOFg"
+ADMINS = [7354827676 , 777209689]  
 user_currency = {}
+user_history = {}
 
 def train_and_save():
     df = pd.read_csv(CSV_PATH)
@@ -66,48 +65,46 @@ def predict_price(cpu, gpu, brand, ram, ssd, model, X_train_cols, currency):
     return f"{converted:.2f} {symbol}"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("""📌 راهنمای ربات:
-- مشخصات لپ‌تاپ رو اینطوری بفرست:
-CPU,GPU,Brand,RAM,SSD
-مثال:
-intel i7,nvidia rtx 3060,asus,16,512
+    keyboard = [
+        [InlineKeyboardButton("💱 تغییر واحد پول", callback_data="currency")],
+        [InlineKeyboardButton("🖥 پیش‌بینی لپ‌تاپ جدید", callback_data="predict")],
+        [InlineKeyboardButton("📜 تاریخچه پیش‌بینی‌ها", callback_data="history")],
+        [InlineKeyboardButton("ℹ️ راهنما", callback_data="help")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text("سلام! خوش اومدی به ربات پیش‌بینی قیمت لپ‌تاپ", reply_markup=reply_markup)
 
-💱 تغییر واحد پول:
- /currency usd → دلار
- /currency eur → یورو
- /currency irr → تومان
+async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    user_id = query.from_user.id
+    if query.data == "currency":
+        keyboard = [
+            [InlineKeyboardButton("USD", callback_data="usd")],
+            [InlineKeyboardButton("EUR", callback_data="eur")],
+            [InlineKeyboardButton("IRR", callback_data="irr")]
+        ]
+        await query.edit_message_text("واحد پول رو انتخاب کن:", reply_markup=InlineKeyboardMarkup(keyboard))
+    elif query.data in ["usd","eur","irr"]:
+        user_currency[user_id] = query.data
+        await query.edit_message_text(f"واحد پول شما روی {query.data.upper()} تنظیم شد.")
+    elif query.data == "history":
+        history = user_history.get(user_id, [])
+        if not history:
+            await query.edit_message_text("شما هنوز هیچ پیش‌بینی انجام ندادید.")
+        else:
+            text = "📜 تاریخچه پیش‌بینی‌ها:\n"
+            for h in history:
+                text += f"{h}\n"
+            await query.edit_message_text(text)
+    elif query.data == "help":
+        txt = """📌 این ربات توسط گروه dark plus ساخته شده است
+💻 قیمت کامپیوتر رو با ماشین یادگیری پیش‌بینی می‌کند
 
-⚙️ دستورات ویژه:
- /train → آموزش دوباره مدل (فقط برای ادمین‌ها)
- /help → همین منو""")
-
-async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    txt = """📌 راهنمای ربات:
-- مشخصات لپ‌تاپ رو اینطوری بفرست:
-CPU,GPU,Brand,RAM,SSD
-مثال:
-intel i7,nvidia rtx 3060,asus,16,512
-
-💱 تغییر واحد پول:
- /currency usd → دلار
- /currency eur → یورو
- /currency irr → تومان
-
-⚙️ دستورات ویژه:
- /train → آموزش دوباره مدل (فقط برای ادمین‌ها)
- /help → همین منو"""
-    await update.message.reply_text(txt)
-
-async def currency_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if not context.args:
-        await update.message.reply_text("لطفا واحد پول رو مشخص کن: usd, eur, irr")
-        return
-    cur = context.args[0].lower()
-    if cur not in ["usd","eur","irr"]:
-        await update.message.reply_text("واحد نامعتبر! فقط usd, eur, irr")
-        return
-    user_currency[update.effective_user.id] = cur
-    await update.message.reply_text(f"واحد پول شما روی {cur.upper()} تنظیم شد.")
+👨‍💻سازندگان: """
+        await query.edit_message_text(txt)
+    elif query.data == "predict":
+        await query.edit_message_text("مشخصات لپ‌تاپ رو اینطوری بفرست:\nCPU,GPU,Brand,RAM,SSD\nمثال:\nintel i7,nvidia rtx 3060,asus,16,512")
 
 async def train_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id not in ADMINS:
@@ -122,9 +119,14 @@ async def train_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         cpu, gpu, brand, ram, ssd = update.message.text.split(",")
-        currency = user_currency.get(update.effective_user.id, "usd")
+        user_id = update.effective_user.id
+        currency = user_currency.get(user_id, "usd")
         result = predict_price(cpu, gpu, brand, ram, ssd, model, X_train_cols, currency)
         await update.message.reply_text(f"💻 Predicted Price: {result}")
+     
+        if user_id not in user_history:
+            user_history[user_id] = []
+        user_history[user_id].append(f"{cpu},{gpu},{brand},{ram},{ssd} → {result}")
     except Exception as e:
         await update.message.reply_text(f"خطا در ورودی! {e}")
 
@@ -134,9 +136,8 @@ if __name__ == "__main__":
     model, X_train_cols = load_model()
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("help", help_cmd))
-    app.add_handler(CommandHandler("currency", currency_cmd))
     app.add_handler(CommandHandler("train", train_cmd))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    app.add_handler(CallbackQueryHandler(button_handler))
     print("Bot is running...")
     app.run_polling()
