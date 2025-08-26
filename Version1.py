@@ -8,12 +8,6 @@ import os
 import tkinter as tk
 from tkinter import ttk, messagebox
 import threading
-pu.alert("""Made by dark-plus group
-Programmers: Erfan Mohammadi and Ali Ahmad Abadi""")
-pu.alert("""Сделано группой dark-plus
-Программисты: Эрфан Мохаммади и Али Ахмад Абади.""")
-pu.alert("""Réalisé par le groupe dark-plus
-Programmeurs : Erfan Mohammadi et Ali Ahmad Abadi""")
 class PricePredictorApp(tk.Tk):
     def __init__(self, csv_file_path):
         super().__init__()
