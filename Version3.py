@@ -1,5 +1,5 @@
 # Machine
-# Developer : erfan mohammadi , ali ahmad abadi , Fatima Zahra
+# Developer : erfan mohammadi , ali ahmad abadi .
 
 import pyautogui as pu
 import pandas as pd
